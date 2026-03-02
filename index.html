@@ -7,383 +7,372 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
         body { 
             font-family: 'Inter', -apple-system, sans-serif; 
             background: #0f0f0f; 
             color: #e5e5e5; 
-            line-height: 1.6; 
-        }
-        
-        .slide {
-            min-height: 100vh;
-            scroll-snap-align: start;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            line-height: 1.6;
             padding: 2rem;
         }
         
-        .card {
-            max-width: 700px;
-            width: 100%;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .last-updated {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: #60a5fa;
+            background: #1e3a8a;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        
+        .subtitle {
+            color: #9ca3af;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .match-card {
             background: #1a1a1a;
             border: 1px solid #2a2a2a;
             border-radius: 12px;
-            padding: 3rem;
-            position: relative;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
         }
         
-        .page-number {
-            position: absolute;
-            bottom: 2rem;
-            right: 2rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
-            color: #6b7280;
+        .match-card:hover {
+            border-color: #3a3a3a;
         }
         
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
+        .match-card.priority {
+            border-left: 3px solid #34d399;
         }
         
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #60a5fa;
+        .founder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
         
-        h3 {
+        .founder-name {
             font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            margin-top: 1.5rem;
+            color: #e5e5e5;
         }
         
-        p {
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-            color: #d1d5db;
+        .founder-company {
+            font-size: 0.875rem;
+            color: #60a5fa;
+            margin-top: 0.25rem;
         }
         
-        .label {
-            font-family: 'JetBrains Mono', monospace;
+        .priority-badge {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .match-section {
+            margin-top: 1rem;
+        }
+        
+        .match-label {
             font-size: 0.75rem;
             color: #6b7280;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: 0.5rem;
+            font-weight: 500;
         }
         
-        .subtitle {
-            font-size: 1.25rem;
-            color: #9ca3af;
-            margin-bottom: 2rem;
-        }
-        
-        .scroll-hint {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-top: 2rem;
-        }
-        
-        .highlight { color: #60a5fa; }
-        .decision { color: #34d399; }
-        .tension { color: #f97316; }
-        
-        .match-card {
-            background: #252525;
-            border-left: 3px solid #60a5fa;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-        }
-        
-        .match-card .expert-name {
+        .expert-name {
             color: #60a5fa;
             font-weight: 600;
-            font-size: 1.125rem;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
         }
         
-        .match-card .reasoning {
+        .expert-expertise {
+            font-size: 0.875rem;
             color: #9ca3af;
-            font-size: 0.9375rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .reasoning {
+            font-size: 0.875rem;
+            color: #d1d5db;
+            line-height: 1.6;
+            background: #252525;
+            padding: 1rem;
+            border-radius: 8px;
             margin-top: 0.75rem;
-            line-height: 1.7;
-        }
-        
-        .founder-section {
-            margin: 2.5rem 0;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #2a2a2a;
-        }
-        
-        .founder-section:last-child {
-            border-bottom: none;
         }
         
         .insight {
-            font-style: italic;
+            font-size: 0.8125rem;
             color: #9ca3af;
-            border-left: 3px solid #f97316;
-            padding-left: 1.25rem;
-            margin: 1rem 0;
+            font-style: italic;
+            border-left: 2px solid #f97316;
+            padding-left: 0.75rem;
+            margin-top: 1rem;
         }
         
-        .stat-row {
+        .stats {
             display: flex;
-            gap: 2rem;
-            margin: 2rem 0;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #1a1a1a;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
         }
         
         .stat {
-            flex: 1;
             text-align: center;
+            flex: 1;
         }
         
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: #60a5fa;
         }
         
         .stat-label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             color: #6b7280;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            margin-top: 0.25rem;
         }
         
-        .priority-match {
-            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1) 0%, rgba(96, 165, 250, 0.05) 100%);
-            border-left: 3px solid #34d399;
-        }
-        
-        .date-badge {
-            display: inline-block;
-            background: #2a2a2a;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-family: 'JetBrains Mono', monospace;
+        .note {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #1e3a8a;
+            border-radius: 8px;
             font-size: 0.875rem;
-            color: #60a5fa;
-            margin-bottom: 1.5rem;
+            color: #93c5fd;
+        }
+        
+        @media (max-width: 768px) {
+            .matches-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- SLIDE 1: COVER -->
-    <div class="slide">
-        <div class="card">
-            <p class="label">ZIP Launchpad · Domain Expert Matching</p>
-            <div class="date-badge">February 24, 2026</div>
-            <h1>Founder Matches</h1>
-            <p class="subtitle">Weekly analysis of student tidbits and expert recommendations</p>
-            <div class="stat-row">
-                <div class="stat">
-                    <div class="stat-value">7</div>
-                    <div class="stat-label">Founders Analyzed</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">6</div>
-                    <div class="stat-label">Expert Matches</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">3</div>
-                    <div class="stat-label">Priority</div>
-                </div>
-            </div>
-            <p class="scroll-hint">scroll ↓ for details</p>
-            <div class="page-number">1/9</div>
+    <div class="container">
+        <div class="header">
+            <h1>Domain Expert Matches</h1>
+            <div class="last-updated">Last Updated: February 24, 2026</div>
+            <p class="subtitle">Current founder-expert matches based on weekly tidbit analysis</p>
         </div>
-    </div>
-
-    <!-- SLIDE 2: ZACH BRENNER -->
-    <div class="slide">
-        <div class="card">
-            <div class="founder-section">
-                <h2>Zach Brenner — Sonomos</h2>
-                <p class="label">Tidbit Date: Feb 22, 2026</p>
-                
-                <h3>Current Work</h3>
-                <p>Built a privacy layer tool for AI to protect lawyers from putting personal information in wrong places. Discovered his entire pitch was wrong—leading with "Do you use AI?" made lawyers defensive instead of interested.</p>
-                
-                <p class="insight">"I thought I needed to build the perfect tool. I actually needed to pitch the right problem."</p>
-                
-                <div class="match-card priority-match">
-                    <p class="expert-name">✓ Match: Shan Cureton (Pitching Coach)</p>
-                    <p class="reasoning">Zach has validated technology (Craig called it "one of the more compelling demos I've seen") but discovered his pitch positioning is fundamentally wrong. He's now reframing from "AI tool" to "privacy layer for personal information" and needs help with pitch delivery to lawyers.</p>
-                </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">6</div>
+                <div class="stat-label">Active Matches</div>
             </div>
-            <div class="page-number">2/9</div>
-        </div>
-    </div>
-
-    <!-- SLIDE 3: MUHAMMAD QUDSI -->
-    <div class="slide">
-        <div class="card">
-            <div class="founder-section">
-                <h2>Muhammad Qudsi — DateFlo</h2>
-                <p class="label">Tidbit Date: Feb 19, 2026</p>
-                
-                <h3>Current Work</h3>
-                <p>Dating concierge service that discovered customers don't need speed—they need confidence. Currently struggling with ChatGPT hallucinating restaurant information.</p>
-                
-                <p class="insight">"I thought I was solving for speed. I'm actually solving for confidence."</p>
-                
-                <div class="match-card priority-match">
-                    <p class="expert-name">✓ Match: Professor Kaveh Abhari (Digital Entrepreneurship)</p>
-                    <p class="reasoning">Muhammad is facing specific technical challenges with AI integration—ChatGPT hallucinations requiring a switch to Claude API with Google Places integration. This is a digital solution development and validation problem that aligns with Prof. Abhari's expertise in developing and validating digital solutions.</p>
-                </div>
+            <div class="stat">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Priority</div>
             </div>
-            <div class="page-number">3/9</div>
-        </div>
-    </div>
-
-    <!-- SLIDE 4: JUAN ALCALA -->
-    <div class="slide">
-        <div class="card">
-            <div class="founder-section">
-                <h2>Juan Alcala — RAFRS</h2>
-                <p class="label">Tidbit Date: Feb 11, 2026</p>
-                
-                <h3>Current Work</h3>
-                <p>Carbon fiber repair kit for field repairs. Technology validated (welders called it "fucking sick"), but struggling with positioning. Mentors told him he's "a hammer looking for a nail."</p>
-                
-                <p class="insight">"I thought I needed to prove the technology works. I actually need to find the person who's already frustrated that it doesn't exist."</p>
-                
-                <div class="match-card">
-                    <p class="expert-name">✓ Match: Julie Morgan (User Experience Design/Research) OR Larissa Wojciechowski (User Needs Analysis)</p>
-                    <p class="reasoning">Juan needs to conduct field research (marina tests, El Segundo manufacturing hub visits) to understand customer pain points and validate positioning. He's running A/B landing page tests and needs help identifying the desperate buyer through user research.</p>
-                </div>
+            <div class="stat">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Founders Analyzed</div>
             </div>
-            <div class="page-number">4/9</div>
         </div>
-    </div>
-
-    <!-- SLIDE 5: KAVINDI SENNEVIRATNE -->
-    <div class="slide">
-        <div class="card">
-            <div class="founder-section">
-                <h2>Kavindi Seneviratne — Fooni</h2>
-                <p class="label">Tidbit Date: Feb 6, 2026</p>
-                
-                <h3>Current Work</h3>
-                <p>Restaurant discount app for students. Has 3 deals active, 100+ restaurants mapped, 25K Instagram views. Now testing if views convert to visits.</p>
-                
-                <p class="insight">"I thought I needed one restaurant to say yes. I actually needed a machine that makes restaurants say yes."</p>
-                
-                <div class="match-card priority-match">
-                    <p class="expert-name">✓ Match: Tiffany Gil (Social Media)</p>
-                    <p class="reasoning">Kavindi has 25K Instagram views and a content-driven customer acquisition machine, but needs to prove conversion from views to actual visits/revenue. This is a social media optimization challenge requiring expertise in turning engagement into action.</p>
+        
+        <div class="matches-grid">
+            <!-- ZACH BRENNER -->
+            <div class="match-card priority">
+                <div class="founder-header">
+                    <div>
+                        <div class="founder-name">Zach Brenner</div>
+                        <div class="founder-company">Sonomos</div>
+                    </div>
+                    <span class="priority-badge">Priority</span>
                 </div>
-            </div>
-            <div class="page-number">5/9</div>
-        </div>
-    </div>
-
-    <!-- SLIDE 6: VINEETA KHANNA -->
-    <div class="slide">
-        <div class="card">
-            <div class="founder-section">
-                <h2>Vineeta Khanna — Harmony Health AI</h2>
-                <p class="label">Tidbit Date: Dec 11, 2025 (Oldest tidbit)</p>
                 
-                <h3>Current Work</h3>
-                <p>PCOS detection through menstrual pad image analysis. Has 2 paying customers ($1 each) but stuck at 2/10 customers. Pattern of building features instead of testing assumptions.</p>
-                
-                <p class="insight">"I thought I needed to build an anonymous system. I actually need to test if anonymity even matters."</p>
-                
-                <div class="match-card">
-                    <p class="expert-name">✓ Match: Larissa Wojciechowski (User Needs Analysis)</p>
-                    <p class="reasoning">Vineeta has a hypothesis blocker (3 girls claiming they'd pay "if anonymous") but hasn't validated if it's real or an excuse. She needs to conduct proper user needs analysis to understand if anonymity is genuinely the barrier or just a convenient excuse.</p>
+                <div class="match-section">
+                    <div class="match-label">Matched Expert</div>
+                    <div class="expert-name">Shan Cureton</div>
+                    <div class="expert-expertise">Pitching Coach</div>
+                    
+                    <div class="reasoning">
+                        Zach has validated technology (Craig called it "one of the more compelling demos I've seen") but discovered his pitch positioning is fundamentally wrong. He's now reframing from "AI tool" to "privacy layer for personal information" and needs help with pitch delivery to lawyers.
+                    </div>
+                    
+                    <div class="insight">
+                        "I thought I needed to build the perfect tool. I actually needed to pitch the right problem."
+                    </div>
                 </div>
-            </div>
-            <div class="page-number">6/9</div>
-        </div>
-    </div>
-
-    <!-- SLIDE 7: ROBERT SANCHEZ -->
-    <div class="slide">
-        <div class="card">
-            <div class="founder-section">
-                <h2>Robert Sanchez — Turner.AI</h2>
-                <p class="label">Tidbit Date: Jan 29, 2026</p>
-                
-                <h3>Current Work</h3>
-                <p>AI academic advisor for SDSU students. Discovered that parsing accuracy is the only thing that matters, not conversation flow or UI. Incorporated as C-Corp, made Top 50 in Baylor competition.</p>
-                
-                <p class="insight">"I thought I needed beautiful conversation. I actually needed perfect parsing."</p>
-                
-                <div class="match-card">
-                    <p class="expert-name">✓ Match: Fadee Kannah (Software Development - AI)</p>
-                    <p class="reasoning">Robert's core challenge is building a specialized parsing system to achieve 90% accuracy across different degree audit formats. This is a technical AI/ML challenge requiring expertise in AI solutions and problem-solving with code.</p>
-                </div>
-            </div>
-            <div class="page-number">7/9</div>
-        </div>
-    </div>
-
-    <!-- SLIDE 8: BILLY CARTER -->
-    <div class="slide">
-        <div class="card">
-            <div class="founder-section">
-                <h2>Billy Carter — Celebrity Concierge</h2>
-                <p class="label">Tidbit Date: Jan 28, 2026</p>
-                
-                <h3>Current Work</h3>
-                <p>Planning podcasting event for March 2026. Previously matched and working through execution.</p>
-                
-                <div class="match-card" style="background: #1a1a1a; border-left-color: #6b7280;">
-                    <p class="expert-name" style="color: #6b7280;">No new match this cycle</p>
-                    <p class="reasoning">Previously matched. Currently in execution mode working on previously recommended actions.</p>
-                </div>
-            </div>
-            <div class="page-number">8/9</div>
-        </div>
-    </div>
-
-    <!-- SLIDE 9: SUMMARY -->
-    <div class="slide">
-        <div class="card">
-            <h2>Priority Actions for Erica</h2>
-            
-            <h3 style="margin-top: 2rem;">High Priority Matches</h3>
-            <div class="match-card priority-match">
-                <p class="expert-name">1. Zach Brenner → Shan Cureton</p>
-                <p class="reasoning"><span class="tension">Urgent:</span> Pitch delivery pivot in progress. Tool validated, positioning wrong.</p>
             </div>
             
-            <div class="match-card priority-match">
-                <p class="expert-name">2. Muhammad Qudsi → Prof. Kaveh Abhari</p>
-                <p class="reasoning"><span class="tension">Urgent:</span> AI integration issues blocking customer delivery.</p>
+            <!-- MUHAMMAD QUDSI -->
+            <div class="match-card priority">
+                <div class="founder-header">
+                    <div>
+                        <div class="founder-name">Muhammad Qudsi</div>
+                        <div class="founder-company">DateFlo</div>
+                    </div>
+                    <span class="priority-badge">Priority</span>
+                </div>
+                
+                <div class="match-section">
+                    <div class="match-label">Matched Expert</div>
+                    <div class="expert-name">Professor Kaveh Abhari</div>
+                    <div class="expert-expertise">Digital Entrepreneurship</div>
+                    
+                    <div class="reasoning">
+                        Muhammad is facing specific technical challenges with AI integration—ChatGPT hallucinations requiring a switch to Claude API with Google Places integration. This is a digital solution development and validation problem.
+                    </div>
+                    
+                    <div class="insight">
+                        "I thought I was solving for speed. I'm actually solving for confidence."
+                    </div>
+                </div>
             </div>
             
-            <div class="match-card priority-match">
-                <p class="expert-name">3. Kavindi Seneviratne → Tiffany Gil</p>
-                <p class="reasoning"><span class="tension">Urgent:</span> 25K views need conversion optimization.</p>
+            <!-- KAVINDI SENNEVIRATNE -->
+            <div class="match-card priority">
+                <div class="founder-header">
+                    <div>
+                        <div class="founder-name">Kavindi Seneviratne</div>
+                        <div class="founder-company">Fooni</div>
+                    </div>
+                    <span class="priority-badge">Priority</span>
+                </div>
+                
+                <div class="match-section">
+                    <div class="match-label">Matched Expert</div>
+                    <div class="expert-name">Tiffany Gil</div>
+                    <div class="expert-expertise">Social Media</div>
+                    
+                    <div class="reasoning">
+                        Kavindi has 25K Instagram views and a content-driven customer acquisition machine, but needs to prove conversion from views to actual visits/revenue. This is a social media optimization challenge requiring expertise in turning engagement into action.
+                    </div>
+                    
+                    <div class="insight">
+                        "I thought I needed one restaurant to say yes. I actually needed a machine that makes restaurants say yes."
+                    </div>
+                </div>
             </div>
             
-            <p style="margin-top: 2rem; color: #6b7280; font-size: 0.9375rem;"><strong>Note:</strong> All founders are actively working through pivots or validation challenges and would benefit from expert guidance.</p>
+            <!-- JUAN ALCALA -->
+            <div class="match-card">
+                <div class="founder-header">
+                    <div>
+                        <div class="founder-name">Juan Alcala</div>
+                        <div class="founder-company">RAFRS</div>
+                    </div>
+                </div>
+                
+                <div class="match-section">
+                    <div class="match-label">Matched Expert</div>
+                    <div class="expert-name">Julie Morgan OR Larissa Wojciechowski</div>
+                    <div class="expert-expertise">User Experience Design / User Needs Analysis</div>
+                    
+                    <div class="reasoning">
+                        Juan needs to conduct field research (marina tests, El Segundo manufacturing hub visits) to understand customer pain points and validate positioning. He's running A/B landing page tests and needs help identifying the desperate buyer through user research.
+                    </div>
+                    
+                    <div class="insight">
+                        "I thought I needed to prove the technology works. I actually need to find the person who's already frustrated that it doesn't exist."
+                    </div>
+                </div>
+            </div>
             
-            <div class="page-number">9/9</div>
+            <!-- VINEETA KHANNA -->
+            <div class="match-card">
+                <div class="founder-header">
+                    <div>
+                        <div class="founder-name">Vineeta Khanna</div>
+                        <div class="founder-company">Harmony Health AI</div>
+                    </div>
+                </div>
+                
+                <div class="match-section">
+                    <div class="match-label">Matched Expert</div>
+                    <div class="expert-name">Larissa Wojciechowski</div>
+                    <div class="expert-expertise">User Needs Analysis</div>
+                    
+                    <div class="reasoning">
+                        Vineeta has a hypothesis blocker (3 girls claiming they'd pay "if anonymous") but hasn't validated if it's real or an excuse. She needs to conduct proper user needs analysis to understand if anonymity is genuinely the barrier.
+                    </div>
+                    
+                    <div class="insight">
+                        "I thought I needed to build an anonymous system. I actually need to test if anonymity even matters."
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ROBERT SANCHEZ -->
+            <div class="match-card">
+                <div class="founder-header">
+                    <div>
+                        <div class="founder-name">Robert Sanchez</div>
+                        <div class="founder-company">Turner.AI</div>
+                    </div>
+                </div>
+                
+                <div class="match-section">
+                    <div class="match-label">Matched Expert</div>
+                    <div class="expert-name">Fadee Kannah</div>
+                    <div class="expert-expertise">Software Development - AI</div>
+                    
+                    <div class="reasoning">
+                        Robert's core challenge is building a specialized parsing system to achieve 90% accuracy across different degree audit formats. This is a technical AI/ML challenge requiring expertise in AI solutions and problem-solving with code.
+                    </div>
+                    
+                    <div class="insight">
+                        "I thought I needed beautiful conversation. I actually needed perfect parsing."
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="note">
+            <strong>Note:</strong> This page displays only active matches. Founders without new matches are not shown until their next update.
         </div>
     </div>
-
-    <script>
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-                window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
-            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                window.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
-            }
-        });
-    </script>
-
 </body>
 </html>
