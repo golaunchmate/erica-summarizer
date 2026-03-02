@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Domain Expert Matches - ZIP Launchpad</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
-            background: #0f0f0f; 
-            color: #e5e5e5; 
-            line-height: 1.6;
-            padding: 2rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #263051 0%, #394260 50%, #5473C6 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
         }
         
         .container {
@@ -21,166 +23,198 @@
         }
         
         .header {
-            margin-bottom: 3rem;
-            border-bottom: 1px solid #2a2a2a;
-            padding-bottom: 2rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #E2E7FD;
         }
         
         .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
         .last-updated {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
-            color: #60a5fa;
-            background: #1e3a8a;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
             display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #E2E7FD;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .subtitle {
-            color: #9ca3af;
-            font-size: 1rem;
-            margin-top: 1rem;
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 300;
+            margin-top: 10px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+        
+        .stat {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            flex: 0 0 auto;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #5473C6;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            font-weight: 600;
         }
         
         .matches-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 1.5rem;
+            gap: 30px;
         }
         
         .match-card {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: border-color 0.2s;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .match-card:hover {
-            border-color: #3a3a3a;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
         }
         
         .match-card.priority {
-            border-left: 3px solid #34d399;
+            border-left: 4px solid #5473C6;
         }
         
         .founder-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
         }
         
         .founder-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #e5e5e5;
+            font-size: 24px;
+            font-weight: bold;
+            color: #263051;
+            margin-bottom: 5px;
         }
         
         .founder-company {
-            font-size: 0.875rem;
-            color: #60a5fa;
-            margin-top: 0.25rem;
+            font-size: 12px;
+            color: #5473C6;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .priority-badge {
-            background: rgba(52, 211, 153, 0.15);
-            color: #34d399;
-            padding: 0.25rem 0.75rem;
+            background: linear-gradient(135deg, #5473C6 0%, #394260 100%);
+            color: white;
+            padding: 6px 16px;
             border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(84, 115, 198, 0.3);
         }
         
         .match-section {
-            margin-top: 1rem;
+            margin-top: 20px;
         }
         
         .match-label {
-            font-size: 0.75rem;
-            color: #6b7280;
+            font-size: 11px;
+            color: #999;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
         
         .expert-name {
-            color: #60a5fa;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            color: #263051;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 5px;
         }
         
         .expert-expertise {
-            font-size: 0.875rem;
-            color: #9ca3af;
-            margin-bottom: 0.75rem;
+            font-size: 12px;
+            color: #5473C6;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
         }
         
         .reasoning {
-            font-size: 0.875rem;
-            color: #d1d5db;
-            line-height: 1.6;
-            background: #252525;
-            padding: 1rem;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+            background: #f8f9fa;
+            padding: 15px;
             border-radius: 8px;
-            margin-top: 0.75rem;
+            margin-top: 10px;
         }
         
         .insight {
-            font-size: 0.8125rem;
-            color: #9ca3af;
+            font-size: 13px;
+            color: #999;
             font-style: italic;
-            border-left: 2px solid #f97316;
-            padding-left: 0.75rem;
-            margin-top: 1rem;
+            border-left: 3px solid #5473C6;
+            padding-left: 15px;
+            margin-top: 20px;
+            line-height: 1.6;
         }
         
-        .stats {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: #1a1a1a;
-            border-radius: 12px;
-            border: 1px solid #2a2a2a;
-        }
-        
-        .stat {
+        .footer {
             text-align: center;
-            flex: 1;
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #60a5fa;
-        }
-        
-        .stat-label {
-            font-size: 0.75rem;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 0.25rem;
+            margin-top: 60px;
+            color: #E2E7FD;
+            opacity: 0.7;
+            font-size: 14px;
         }
         
         .note {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: #1e3a8a;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: #93c5fd;
+            margin-top: 40px;
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .note strong {
+            color: #263051;
         }
         
         @media (max-width: 768px) {
@@ -189,11 +223,20 @@
             }
             
             body {
-                padding: 1rem;
+                padding: 20px 15px;
             }
             
             .header h1 {
-                font-size: 1.5rem;
+                font-size: 36px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stat {
+                padding: 15px 30px;
             }
         }
     </style>
@@ -201,8 +244,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Domain Expert Matches</h1>
-            <div class="last-updated">Last Updated: February 24, 2026</div>
+            <h1>🎯 Domain Expert Matches</h1>
+            <div class="last-updated">📅 Last Updated: February 24, 2026</div>
             <p class="subtitle">Current founder-expert matches based on weekly tidbit analysis</p>
         </div>
         
@@ -372,6 +415,13 @@
         
         <div class="note">
             <strong>Note:</strong> This page displays only active matches. Founders without new matches are not shown until their next update.
+        </div>
+        
+        <div class="footer">
+            <p>Powered by LaunchMate Agent Intelligence System</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                Built for ZIP Launchpad at San Diego State University
+            </p>
         </div>
     </div>
 </body>
